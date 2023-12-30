@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Results</title>
+</head>
+<body>
+    <h1>API Results</h1>
+    <ul>
+        {% for item in api_data %}
+            <li>Author {{ item.author }}</li>
+            <li>Title {{ item.title }}</li>
+            {% if item.description == 'None' %}
+            <li>Description {{ item.description }}</li>
+            {%endif%}
+            <li>Content {{ item.content }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
