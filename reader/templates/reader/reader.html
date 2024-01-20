@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>API Results</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reader/style.css' %}">
 </head>
 <body>
-    <h1>API Results</h1>
-    <ul>
-        {% for item in api_data %}
-            <li>Author {{ item.author }}</li>
-            <li>Title {{ item.title }}</li>
-            {% if item.description == 'None' %}
-            <li>Description {{ item.description }}</li>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+      </form>
+    
+    
+        {% for item in request.session.api_data %}
+        <div class="article">
+            <h1>{{ item.title }}</h1>
+            {% if item.description %}
+            <h2>{{ item.description }}</h2>
             {%endif%}
-            <li>Content {{ item.content }}</li>
+            {% if item.urlToImage %}
+            <img src="{{item.urlToImage}}" alt="image accompanying the article">
+            {%endif%}
+            
+    
+        <a href="{{item.url}}" target="_blank" class="button">Read</a>
+        </div>
         {% endfor %}
-    </ul>
 </body>
 </html>
