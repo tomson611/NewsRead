@@ -1,43 +1,42 @@
 from django.shortcuts import render
-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.views import View
-
-import requests
-
+from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 from newsread.local_settings import API_KEY
 from reader.forms import ReadForm
+import requests
 
 
 def read_view(request):
     if request.method == "POST":
-        # Create a form instance and populate it with data from the request (binding):
         form = ReadForm(request.POST)
-
-        # Check if the form is valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            # book_instance.due_back = form.cleaned_data['renewal_date']
-            # book_instance.save()
             country = form.cleaned_data["country"]
             category = form.cleaned_data["category"]
 
-            url = f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&apiKey={API_KEY}"
-            response = requests.get(url)
-            data = response.json()
-            api_data = data["articles"]
-            print(api_data)
-            request.session["api_data"] = api_data
-            request.session["country"] = country
-            request.session["category"] = category
-            # return render(request, 'reader/reader.html', {'api_data': api_data})
+            try:
+                url = f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100&apiKey={API_KEY}"
+                response = requests.get(url)
+                response.raise_for_status()
+                data = response.json()
+                api_data = data.get("articles", [])
 
-            # redirect to a new URL:
-            # return HttpResponseRedirect('/', {'api_data': api_data})
-            # return render(request, 'reader/reader.html', {'api_data': api_data, 'form': form,})
-            return HttpResponseRedirect("/")
-    # If this is a GET (or any other method) create the default form.
+                request.session["api_data"] = api_data
+                request.session["country"] = country
+                request.session["category"] = category
+
+            except requests.RequestException as e:
+                messages.error(request, f"Error making API request: {e}")
+                return HttpResponseRedirect("read")
+
+            except ValueError as e:
+                messages.error(request, f"Error parsing JSON response: {e}")
+                return HttpResponseRedirect("read")
+
+        else:
+            messages.error(request, "Invalid form data")
+            return HttpResponseRedirect("read")
+
     else:
         form = ReadForm(
             initial={
@@ -46,8 +45,10 @@ def read_view(request):
             }
         )
 
-    context = {
-        "form": form,
-    }
+    paginator = Paginator(request.session.get("api_data", []), 25)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {"form": form, "page_obj": page_obj}
 
     return render(request, "reader/reader.html", context)
