@@ -60,6 +60,11 @@ country_list = [
 category_list = [
     ("general", "General"),
     ("business", "Business"),
+    ("entertainment", "Entertainment"),
+    ("health", "Health"),
+    ("science", "Science"),
+    ("sports", "Sports"),
+    ("technology", "Technology"),
 ]
 
 
