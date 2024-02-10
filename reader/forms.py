@@ -82,3 +82,21 @@ class ReadForm(forms.Form):
     def clean_category(self):
         data = self.cleaned_data["category"]
         return data
+    
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=500)
+    domains = forms.CharField(max_length=50,required=False)
+    exclude_domains = forms.CharField(max_length=50,required=False)
+
+
+    def clean_search(self):
+        data = self.cleaned_data['search']
+        return data
+    
+    def clean_domains(self):
+        data = self.cleaned_data['domains']
+        return data
+    
+    def clean_exclude_domains(self):
+        data = self.cleaned_data['exclude_domains']
+        return data
