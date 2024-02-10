@@ -29,6 +29,14 @@ body  {
     text-wrap: balance;
 }
 
+.article span {
+    margin-left: 5px;
+}
+
+p {
+    text-align: center;
+}
+
 img {
     width: 70%;
     height: 50%;
