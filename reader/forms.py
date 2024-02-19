@@ -86,11 +86,11 @@ LANGUAGES = [
 
 
 class ReadForm(forms.Form):
-    country = forms.ChoiceField(
-        choices=country_list,
-    )
+    country = forms.ChoiceField(choices=COUNTRIES)
+    category = forms.ChoiceField(choices=CATEGORIES)
 
-    category = forms.ChoiceField(choices=category_list)
+    def clean_field(self, field_name):
+        return self.cleaned_data[field_name]
 
     def clean_country(self):
         data = self.cleaned_data["country"]
