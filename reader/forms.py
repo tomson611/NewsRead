@@ -1,6 +1,7 @@
 from django import forms
 
-country_list = [
+
+COUNTRIES = [
     ("ae", "United Arab Emirates"),
     ("ar", "Argentina"),
     ("at", "Austria"),
@@ -57,7 +58,7 @@ country_list = [
     ("za", "South Africa"),
 ]
 
-category_list = [
+CATEGORIES = [
     ("general", "General"),
     ("business", "Business"),
     ("entertainment", "Entertainment"),
