@@ -9,39 +9,39 @@
 </head>
 
 <body>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
-    </ul>
-    {% endif %}
-    <form action="search?page=1" method="post">
-        {% csrf_token %}
-        <table>
-            {{ form }}
-        </table>
-        <input type="submit" value="Submit">
-    </form>
-    {% for item in page_obj %}
-    
-    {%if item.title != "[Removed]"%}
-    <div class="article">
-        <p>{{item.source.name}}</p>
-        {% if item.urlToImage %}
-        <img src="{{item.urlToImage}}" alt="image accompanying the article">
-        {%endif%}
-        <h1>{{ item.title }}</h1>
-        {% if item.description %}
-        <h2>{{ item.description }}</h2>
-        {%endif%}
-        <a href="{{item.url}}" target="_blank" class="button">Read</a>
-    </div>
-    {%endif%}
-    {% empty %}
-        <p>No results</p>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
     {% endfor %}
-    <div class="pagination">
+</ul>
+{% endif %}
+<form action="search?page=1" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <input type="submit" value="Submit">
+</form>
+{% for item in page_obj %}
+
+{%if item.title != "[Removed]"%}
+<div class="article">
+    <p>{{item.source.name}}</p>
+    {% if item.urlToImage %}
+    <img src="{{item.urlToImage}}" alt="image accompanying the article">
+    {%endif%}
+    <h1>{{ item.title }}</h1>
+    {% if item.description %}
+    <h2>{{ item.description }}</h2>
+    {%endif%}
+    <a href="{{item.url}}" target="_blank" class="button">Read</a>
+</div>
+{%endif%}
+{% empty %}
+<p>No results</p>
+{% endfor %}
+<div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -55,7 +55,7 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
-    </div>
+</div>
 </body>
 
 </html>
