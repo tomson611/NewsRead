@@ -92,28 +92,16 @@ class ReadForm(forms.Form):
     def clean_field(self, field_name):
         return self.cleaned_data[field_name]
 
-    def clean_country(self):
-        data = self.cleaned_data["country"]
-        return data
 
-    def clean_category(self):
-        data = self.cleaned_data["category"]
-        return data
-    
 class SearchForm(forms.Form):
     search = forms.CharField(max_length=500)
-    domains = forms.CharField(max_length=50,required=False)
-    exclude_domains = forms.CharField(max_length=50,required=False)
+    domains = forms.CharField(max_length=50, required=False)
+    exclude_domains = forms.CharField(max_length=50, required=False)
+    date_from = forms.DateField(required=False)
+    date_to = forms.DateField(required=False)
+    language = forms.ChoiceField(
+        required=False, choices=LANGUAGES, initial=("en", "English")
+    )
 
-
-    def clean_search(self):
-        data = self.cleaned_data['search']
-        return data
-    
-    def clean_domains(self):
-        data = self.cleaned_data['domains']
-        return data
-    
-    def clean_exclude_domains(self):
-        data = self.cleaned_data['exclude_domains']
-        return data
+    def clean_field(self, field_name):
+        return self.cleaned_data[field_name]
