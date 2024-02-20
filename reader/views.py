@@ -40,10 +40,7 @@ def read_view(request):
                 messages.error(request, f"Error parsing JSON response: {e}")
                 return HttpResponseRedirect("read")
 
-
-            url = reverse('read_view', kwargs={'page': 1})
-            return HttpResponseRedirect(url)
-            # return HttpResponseRedirect("read?page=1")
+            return HttpResponseRedirect("read?page=1")
 
         else:
             messages.error(request, "Invalid form data")
@@ -65,13 +62,17 @@ def read_view(request):
 
     return render(request, "reader/read.html", context)
 
+
 def search_view(request):
     if request.method == "POST":
         form = SearchForm(request.POST)
         if form.is_valid():
             search = form.cleaned_data["search"]
-            domains = form.cleaned_data['domains']
-            exclude_domains = form.cleaned_data['exclude_domains']
+            domains = form.cleaned_data["domains"]
+            exclude_domains = form.cleaned_data["exclude_domains"]
+            date_to = date_to_iso(form, "date_to")
+            date_from = date_to_iso(form, "date_from")
+            language = form.cleaned_data["language"]
 
             try:
                 url = (
@@ -81,14 +82,24 @@ def search_view(request):
 
                 response = requests.get(url)
                 response.raise_for_status()
+
                 data = response.json()
+
                 search_data = data.get("articles", [])
+
+                for item in search_data:
+                    date_time = datetime.fromisoformat(item["publishedAt"])
+                    date_time_str = date_time.strftime("%m-%d-%Y")
+                    item["publishedAt"] = date_time_str
 
                 request.session["search_data"] = search_data
                 request.session["search"] = search
                 request.session["domains"] = domains
                 request.session["exclude_domains"] = exclude_domains
-                
+                request.session["date_to"] = date_to
+                request.session["date_from"] = date_from
+                request.session["language"] = language
+
             except requests.RequestException as e:
                 messages.error(request, f"Error making API request: {e}")
                 return HttpResponseRedirect("search")
@@ -96,21 +107,24 @@ def search_view(request):
             except ValueError as e:
                 messages.error(request, f"Error parsing JSON response: {e}")
                 return HttpResponseRedirect("search")
-            
-            
+
             return HttpResponseRedirect("search?page=1")
 
         else:
-            messages.error(request, "Invalid form data")
+            messages.error(request, form.errors)
             return HttpResponseRedirect("search")
 
     else:
-        form = SearchForm(initial={
+        form = SearchForm(
+            initial={
                 "search": request.session.get("search"),
                 "domains": request.session.get("domains"),
                 "exclude_domains": request.session.get("exclude_domains"),
-                
-            })
+                "date_to": request.session.get("date_to"),
+                "date_from": request.session.get("date_from"),
+                "language": request.session.get("language"),
+            }
+        )
 
     paginator = Paginator(request.session.get("search_data", []), 25)
     page_number = request.GET.get("page")
