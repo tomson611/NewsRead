@@ -19,7 +19,10 @@ def read_view(request):
             category = form.cleaned_data["category"]
 
             try:
-                url = f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100&apiKey={API_KEY}"
+                url = (
+                    f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100"
+                    f"&apiKey={API_KEY}"
+                )
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
@@ -71,7 +74,11 @@ def search_view(request):
             exclude_domains = form.cleaned_data['exclude_domains']
 
             try:
-                url = f"https://newsapi.org/v2/everything?q={search}&domains={domains}&excludeDomains={exclude_domains}&language=en&apiKey={API_KEY}"
+                url = (
+                    f"https://newsapi.org/v2/everything?q={search}&domains={domains}&excludeDomains={exclude_domains}"
+                    f"&language={language}&from={date_from}&to={date_to}&apiKey={API_KEY}"
+                )
+
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
