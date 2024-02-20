@@ -1,11 +1,14 @@
-from django.shortcuts import render
+from datetime import datetime
+
+import requests
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.urls import reverse
+from django.shortcuts import render
+
 from newsread.local_settings import API_KEY
 from reader.forms import ReadForm, SearchForm
-import requests
+from reader.functions import date_to_iso
 
 
 def read_view(request):
