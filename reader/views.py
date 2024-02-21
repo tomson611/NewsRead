@@ -73,11 +73,12 @@ def search_view(request):
             date_to = date_to_iso(form, "date_to")
             date_from = date_to_iso(form, "date_from")
             language = form.cleaned_data["language"]
+            sort_by = form.cleaned_data["sort_by"]
 
             try:
                 url = (
                     f"https://newsapi.org/v2/everything?q={search}&domains={domains}&excludeDomains={exclude_domains}"
-                    f"&language={language}&from={date_from}&to={date_to}&apiKey={API_KEY}"
+                    f"&language={language}&from={date_from}&to={date_to}&sortBy={sort_by}&apiKey={API_KEY}"
                 )
 
                 response = requests.get(url)
@@ -99,6 +100,7 @@ def search_view(request):
                 request.session["date_to"] = date_to
                 request.session["date_from"] = date_from
                 request.session["language"] = language
+                request.session["sort_by"] = sort_by
 
             except requests.RequestException as e:
                 messages.error(request, f"Error making API request: {e}")
@@ -122,7 +124,8 @@ def search_view(request):
                 "exclude_domains": request.session.get("exclude_domains"),
                 "date_to": request.session.get("date_to"),
                 "date_from": request.session.get("date_from"),
-                "language": request.session.get("language"),
+                "language": request.session.get("language", "en"),
+                "sort_by": request.session.get("sort_by"),
             }
         )
 
