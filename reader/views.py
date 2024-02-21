@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from datetime import datetime
+
+import requests
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.contrib import messages
+from django.shortcuts import render
+
 from newsread.local_settings import API_KEY
-from reader.forms import ReadForm
-import requests
+from reader.forms import ReadForm, SearchForm
+from reader.functions import date_to_iso
 
 
 def read_view(request):
@@ -15,7 +19,10 @@ def read_view(request):
             category = form.cleaned_data["category"]
 
             try:
-                url = f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100&apiKey={API_KEY}"
+                url = (
+                    f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100"
+                    f"&apiKey={API_KEY}"
+                )
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
@@ -32,6 +39,8 @@ def read_view(request):
             except ValueError as e:
                 messages.error(request, f"Error parsing JSON response: {e}")
                 return HttpResponseRedirect("read")
+
+            return HttpResponseRedirect("read?page=1")
 
         else:
             messages.error(request, "Invalid form data")
@@ -51,4 +60,79 @@ def read_view(request):
 
     context = {"form": form, "page_obj": page_obj}
 
-    return render(request, "reader/reader.html", context)
+    return render(request, "reader/read.html", context)
+
+
+def search_view(request):
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data["search"]
+            domains = form.cleaned_data["domains"]
+            exclude_domains = form.cleaned_data["exclude_domains"]
+            date_to = date_to_iso(form, "date_to")
+            date_from = date_to_iso(form, "date_from")
+            language = form.cleaned_data["language"]
+            sort_by = form.cleaned_data["sort_by"]
+
+            try:
+                url = (
+                    f"https://newsapi.org/v2/everything?q={search}&domains={domains}&excludeDomains={exclude_domains}"
+                    f"&language={language}&from={date_from}&to={date_to}&sortBy={sort_by}&apiKey={API_KEY}"
+                )
+
+                response = requests.get(url)
+                response.raise_for_status()
+
+                data = response.json()
+
+                search_data = data.get("articles", [])
+
+                for item in search_data:
+                    date_time = datetime.fromisoformat(item["publishedAt"])
+                    date_time_str = date_time.strftime("%m-%d-%Y")
+                    item["publishedAt"] = date_time_str
+
+                request.session["search_data"] = search_data
+                request.session["search"] = search
+                request.session["domains"] = domains
+                request.session["exclude_domains"] = exclude_domains
+                request.session["date_to"] = date_to
+                request.session["date_from"] = date_from
+                request.session["language"] = language
+                request.session["sort_by"] = sort_by
+
+            except requests.RequestException as e:
+                messages.error(request, f"Error making API request: {e}")
+                return HttpResponseRedirect("search")
+
+            except ValueError as e:
+                messages.error(request, f"Error parsing JSON response: {e}")
+                return HttpResponseRedirect("search")
+
+            return HttpResponseRedirect("search?page=1")
+
+        else:
+            messages.error(request, form.errors)
+            return HttpResponseRedirect("search")
+
+    else:
+        form = SearchForm(
+            initial={
+                "search": request.session.get("search"),
+                "domains": request.session.get("domains"),
+                "exclude_domains": request.session.get("exclude_domains"),
+                "date_to": request.session.get("date_to"),
+                "date_from": request.session.get("date_from"),
+                "language": request.session.get("language", "en"),
+                "sort_by": request.session.get("sort_by"),
+            }
+        )
+
+    paginator = Paginator(request.session.get("search_data", []), 25)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {"form": form, "page_obj": page_obj}
+
+    return render(request, "reader/search.html", context)

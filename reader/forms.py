@@ -1,6 +1,7 @@
 from django import forms
 
-country_list = [
+
+COUNTRIES = [
     ("ae", "United Arab Emirates"),
     ("ar", "Argentina"),
     ("at", "Austria"),
@@ -57,7 +58,7 @@ country_list = [
     ("za", "South Africa"),
 ]
 
-category_list = [
+CATEGORIES = [
     ("general", "General"),
     ("business", "Business"),
     ("entertainment", "Entertainment"),
@@ -67,18 +68,45 @@ category_list = [
     ("technology", "Technology"),
 ]
 
+LANGUAGES = [
+    ("ar", "Arabic"),
+    ("de", "German"),
+    ("en", "English"),
+    ("es", "Spanish"),
+    ("fr", "French"),
+    ("he", "Hebrew"),
+    ("it", "Italian"),
+    ("nl", "Dutch"),
+    ("no", "Norwegian"),
+    ("pt", "Portuguese"),
+    ("ru", "Russian"),
+    ("sv", "Swedish"),
+    ("zh", "Chinese"),
+]
+
+SORT_BY_CHOICES = [
+    ("relevancy", "relevancy"),
+    ("popularity", "popularity"),
+    ("publishedAt", "published at"),
+]
+
 
 class ReadForm(forms.Form):
-    country = forms.ChoiceField(
-        choices=country_list,
-    )
+    country = forms.ChoiceField(choices=COUNTRIES)
+    category = forms.ChoiceField(choices=CATEGORIES)
 
-    category = forms.ChoiceField(choices=category_list)
+    def clean_field(self, field_name):
+        return self.cleaned_data[field_name]
 
-    def clean_country(self):
-        data = self.cleaned_data["country"]
-        return data
 
-    def clean_category(self):
-        data = self.cleaned_data["category"]
-        return data
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=500)
+    domains = forms.CharField(max_length=50, required=False)
+    exclude_domains = forms.CharField(max_length=50, required=False)
+    date_from = forms.DateField(required=False)
+    date_to = forms.DateField(required=False)
+    language = forms.ChoiceField(required=False, choices=LANGUAGES)
+    sort_by = forms.ChoiceField(required=False, choices=SORT_BY_CHOICES)
+
+    def clean_field(self, field_name):
+        return self.cleaned_data[field_name]
