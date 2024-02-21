@@ -84,6 +84,12 @@ LANGUAGES = [
     ("zh", "Chinese"),
 ]
 
+SORT_BY_CHOICES = [
+    ("relevancy", "relevancy"),
+    ("popularity", "popularity"),
+    ("publishedAt", "published at"),
+]
+
 
 class ReadForm(forms.Form):
     country = forms.ChoiceField(choices=COUNTRIES)
@@ -99,9 +105,8 @@ class SearchForm(forms.Form):
     exclude_domains = forms.CharField(max_length=50, required=False)
     date_from = forms.DateField(required=False)
     date_to = forms.DateField(required=False)
-    language = forms.ChoiceField(
-        required=False, choices=LANGUAGES, initial=("en", "English")
-    )
+    language = forms.ChoiceField(required=False, choices=LANGUAGES)
+    sort_by = forms.ChoiceField(required=False, choices=SORT_BY_CHOICES)
 
     def clean_field(self, field_name):
         return self.cleaned_data[field_name]
