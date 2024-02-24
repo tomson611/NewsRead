@@ -20,7 +20,10 @@ def read_view(request):
 
             try:
                 url = (
-                    f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&pagesize=100"
+                    f"https://newsapi.org/v2/top-headlines?"
+                    f"country={country}"
+                    f"&category={category}"
+                    f"&pagesize=100"
                     f"&apiKey={API_KEY}"
                 )
                 response = requests.get(url)
@@ -77,8 +80,15 @@ def search_view(request):
 
             try:
                 url = (
-                    f"https://newsapi.org/v2/everything?q={search}&domains={domains}&excludeDomains={exclude_domains}"
-                    f"&language={language}&from={date_from}&to={date_to}&sortBy={sort_by}&apiKey={API_KEY}"
+                    f"https://newsapi.org/v2/everything?"
+                    f"q={search}"
+                    f"&domains={domains}"
+                    f"&excludeDomains={exclude_domains}"
+                    f"&language={language}"
+                    f"&from={date_from}"
+                    f"&to={date_to}"
+                    f"&sortBy={sort_by}"
+                    f"&apiKey={API_KEY}"
                 )
 
                 response = requests.get(url)
@@ -148,7 +158,10 @@ def sources_view(request):
 
             try:
                 url = (
-                    f"https://newsapi.org/v2/top-headlines/sources?&language={language}&category={category}&country={country}"
+                    f"https://newsapi.org/v2/top-headlines/sources?"
+                    f"&language={language}"
+                    f"&category={category}"
+                    f"&country={country}"
                     f"&apiKey={API_KEY}"
                 )
 
