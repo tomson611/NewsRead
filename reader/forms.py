@@ -110,3 +110,12 @@ class SearchForm(forms.Form):
 
     def clean_field(self, field_name):
         return self.cleaned_data[field_name]
+
+
+class SourcesForm(forms.Form):
+    country = forms.ChoiceField(choices=COUNTRIES)
+    category = forms.ChoiceField(choices=CATEGORIES)
+    language = forms.ChoiceField(choices=LANGUAGES)
+
+    def clean_field(self, field_name):
+        return self.cleaned_data[field_name]
