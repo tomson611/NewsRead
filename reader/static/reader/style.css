@@ -30,7 +30,7 @@ body  {
     justify-content: center;
 }
 
-.article, .card h1 {
+.article h1, .card h1 {
     padding: 20px 10px;
     margin-bottom: 0;
     margin-top: 0;
@@ -38,7 +38,7 @@ body  {
     text-align: center;
 }
 
-.article, .card h2 {
+.article h2, .card h2 {
     padding: 10px;
     margin: 0;
     font-weight: 200;
@@ -47,7 +47,7 @@ body  {
     text-wrap: balance;
 }
 
-.article, .card-container span {
+.article span, .card-container span {
     margin-left: 5px;
 }
 
