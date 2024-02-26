@@ -208,3 +208,7 @@ def sources_view(request):
     context = {"form": form, "page_obj": page_obj}
 
     return render(request, "reader/sources.html", context)
+
+
+def home_view(request):
+    return render(request, "reader/base.html")
