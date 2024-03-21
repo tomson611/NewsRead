@@ -177,7 +177,6 @@ def sources_view(request):
                 data = response.json()
 
                 sources_data = data.get("sources", [])
-                print(sources_data)
 
                 request.session["sources_data"] = sources_data
                 request.session["language"] = language
