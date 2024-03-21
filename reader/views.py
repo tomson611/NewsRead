@@ -31,7 +31,13 @@ def read_view(request):
                 data = response.json()
                 read_data = data.get("articles", [])
 
-                request.session["api_data"] = api_data
+                for item in read_data:
+                    date_time = datetime.fromisoformat(item["publishedAt"])
+                    date_time_str = date_time.strftime("%m-%d-%Y")
+                    item["publishedAt"] = date_time_str
+                    item["title"] = item["title"].split("-")[0].strip()
+
+                request.session["api_data"] = read_data
                 request.session["country"] = country
                 request.session["category"] = category
 
