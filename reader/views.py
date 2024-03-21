@@ -29,7 +29,7 @@ def read_view(request):
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
-                api_data = data.get("articles", [])
+                read_data = data.get("articles", [])
 
                 request.session["api_data"] = api_data
                 request.session["country"] = country
