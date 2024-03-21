@@ -2,6 +2,7 @@ from django import forms
 
 
 COUNTRIES = [
+    ("", "----"),
     ("ae", "United Arab Emirates"),
     ("ar", "Argentina"),
     ("at", "Austria"),
@@ -59,6 +60,7 @@ COUNTRIES = [
 ]
 
 CATEGORIES = [
+    ("", "----"),
     ("general", "General"),
     ("business", "Business"),
     ("entertainment", "Entertainment"),
@@ -69,6 +71,7 @@ CATEGORIES = [
 ]
 
 LANGUAGES = [
+    ("", "----"),
     ("ar", "Arabic"),
     ("de", "German"),
     ("en", "English"),
