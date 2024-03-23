@@ -2,6 +2,7 @@ from django import forms
 
 
 COUNTRIES = [
+    ("", "----"),
     ("ae", "United Arab Emirates"),
     ("ar", "Argentina"),
     ("at", "Austria"),
@@ -59,6 +60,7 @@ COUNTRIES = [
 ]
 
 CATEGORIES = [
+    ("", "----"),
     ("general", "General"),
     ("business", "Business"),
     ("entertainment", "Entertainment"),
@@ -69,6 +71,7 @@ CATEGORIES = [
 ]
 
 LANGUAGES = [
+    ("", "----"),
     ("ar", "Arabic"),
     ("de", "German"),
     ("en", "English"),
@@ -113,9 +116,9 @@ class SearchForm(forms.Form):
 
 
 class SourcesForm(forms.Form):
-    country = forms.ChoiceField(choices=COUNTRIES)
-    category = forms.ChoiceField(choices=CATEGORIES)
-    language = forms.ChoiceField(choices=LANGUAGES)
+    country = forms.ChoiceField(choices=COUNTRIES, required=False)
+    category = forms.ChoiceField(choices=CATEGORIES, required=False)
+    language = forms.ChoiceField(choices=LANGUAGES, required=False)
 
     def clean_field(self, field_name):
         return self.cleaned_data[field_name]

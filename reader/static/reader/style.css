@@ -4,108 +4,118 @@ body  {
     height: 100%;
 }
 
-
-.article {
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    margin: 80px;
-    padding-bottom: 20px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0 2px 10px;
-}
-
-.card {
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    margin: 20px;
-    padding-bottom: 20px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0 2px 10px;
+header {
+    margin-bottom: 2rem;
 }
 
 .card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top:80px;
 }
 
-.article h1, .card h1 {
-    padding: 20px 10px;
+.card {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    width: 18rem;
+    height: 23rem;
+    margin: 20px;
+    padding-bottom: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0 2px 10px;
+}
+
+.article {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    margin: 80px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0 2px 10px;
+}
+
+.article h1 {
     margin-bottom: 0;
     margin-top: 0;
     font-weight: 400;
     text-align: center;
+    font-size: 2rem;
 }
 
-.article h2, .card h2 {
+.article h2 {
     padding: 10px;
     margin: 0;
     font-weight: 200;
-    font-size: 20px;
     text-align: center;
-    text-wrap: balance;
+    font-size: 1.5rem;
 }
 
-.article span, .card-container span {
+.article span {
     margin-left: 5px;
 }
 
-p {
+.article p {
+    margin-left: 10px;
+    margin-top: 2rem;
     text-align: center;
 }
 
-img {
-    width: 70%;
-    height: 50%;
-    margin: 0 auto;
-    padding: 40px;
-    display: block;
+.article_details {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.button {
-    backface-visibility: hidden;
-    background-color: #405cf5;
-    border-radius: 6px;
-    border-width: 0;
-    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .1) 0 2px 5px 0, rgba(0, 0, 0, .07) 0 1px 1px 0;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
-    font-size: 100%;
-    height: 44px;
-    line-height: 1.15;
-    margin: 12px auto;
-    display: block;
-    outline: none;
+.article_core {
+    text-align: center;
+}
+
+.article_text {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.image-container {
+    width: 429px;
+    height: 258px;
     overflow: hidden;
-    padding: 12px;
-    text-decoration: none;
-    position: relative;
-    text-align: center;
-    text-transform: none;
-    transform: translateZ(0);
-    transition: all .2s, box-shadow .08s ease-in;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin-top: auto;
+    display: flex;
+    flex-shrink: 0;
 }
 
-.button:disabled {
-    cursor: default;
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    /*padding: 20px;*/
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
-.button:focus {
-    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+.button {
+    margin-top: 1rem;
 }
 
 form {
-    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.mb-3 {
+    padding-left: 1rem;
+}
+
+input[type=submit] {
+    margin-left: 1rem;
 }
 
 .pagination {
-    text-align: center;
+    justify-content: center;
 }
 

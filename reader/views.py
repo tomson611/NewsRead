@@ -29,9 +29,15 @@ def read_view(request):
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
-                api_data = data.get("articles", [])
+                read_data = data.get("articles", [])
 
-                request.session["api_data"] = api_data
+                for item in read_data:
+                    date_time = datetime.fromisoformat(item["publishedAt"])
+                    date_time_str = date_time.strftime("%m-%d-%Y")
+                    item["publishedAt"] = date_time_str
+                    item["title"] = item["title"].split("-")[0].strip()
+
+                request.session["api_data"] = read_data
                 request.session["country"] = country
                 request.session["category"] = category
 
@@ -171,7 +177,6 @@ def sources_view(request):
                 data = response.json()
 
                 sources_data = data.get("sources", [])
-                print(sources_data)
 
                 request.session["sources_data"] = sources_data
                 request.session["language"] = language
@@ -208,3 +213,7 @@ def sources_view(request):
     context = {"form": form, "page_obj": page_obj}
 
     return render(request, "reader/sources.html", context)
+
+
+def home_view(request):
+    return render(request, "reader/base.html")
