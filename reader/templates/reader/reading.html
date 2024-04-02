@@ -1,0 +1,43 @@
+{% extends "reader/base.html" %}
+{% load static %}
+
+{% load crispy_forms_filters %}
+
+
+{% block body %}
+    {% load crispy_forms_tags %}
+{% load crispy_forms_tags %}
+    <form action="{% block action %}{% endblock %}" method="post" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+    {% for item in page_obj %}
+        {% if item.title != "[Removed]" %}
+            <div class="article">
+                <div class="image-container">
+                {% if item.urlToImage %}
+                    <img src="{{ item.urlToImage }}" class= "" alt="image for the article">
+                {% else %}
+                    <img src="{% static 'reader/img/no-image@2x.png' %}" class= "" alt="image fpr the article is missing">
+                {% endif %}
+                </div>
+                <div class="article_text">
+                    <div class="article_details">
+                        <p>{{ item.source.name }}</p>
+                        <p>{{ item.publishedAt }}</p>
+                    </div>
+                    <div class="article_core">
+                        <h1>{{ item.title }}</h1>
+                        {% if item.description %}
+                            <h2>{{ item.description }}</h2>
+                        {% endif %}
+                        <a href="{{ item.url }}" target="_blank" class="btn btn-primary button" role="button">Read</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% empty %}
+        <p>No results</p>
+    {% endfor %}
+{% endblock %}
