@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "reader.apps.ReaderConfig",
     "crispy_forms",
     "crispy_bootstrap5",
-    "widget_tweaks",
 ]
 
 # Crispy Forms settings
