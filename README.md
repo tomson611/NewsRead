@@ -72,6 +72,8 @@ You can deploy on any hosting of your choice for example [PythonAnywhere](https:
 
 * [Django](https://www.djangoproject.com/) - The web framework used
 * [Requests](https://requests.readthedocs.io/en/latest/) - HTTP library for Python
+* [NewsApi](https://newsapi.org) - News API is a simple, easy-to-use REST API that returns JSON search results for current and historic news articles published by over 80,000 worldwide 
+  sources.
 
 
 ## Code of Conduct
