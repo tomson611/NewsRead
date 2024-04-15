@@ -67,7 +67,7 @@ def read_view(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {"form": form, "page_obj": page_obj}
+    context = {"form": form, "page_obj": page_obj, "show_pagination": True}
 
     return render(request, "reader/read.html", context)
 
@@ -149,7 +149,7 @@ def search_view(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {"form": form, "page_obj": page_obj}
+    context = {"form": form, "page_obj": page_obj, "show_pagination": True}
 
     return render(request, "reader/search.html", context)
 
@@ -216,4 +216,5 @@ def sources_view(request):
 
 
 def home_view(request):
-    return render(request, "reader/base.html")
+    context = {"show_pagination": False}
+    return render(request, "reader/home.html", context)
