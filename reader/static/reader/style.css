@@ -135,6 +135,10 @@ input[type=submit] {
         margin-bottom: 1rem;
     }
 
+    .article {
+        margin:  1.5rem;
+    }
+
     .article h1 {
         margin: 0 2rem;
     }
