@@ -3,11 +3,9 @@
 
 
 {% block body %}
-    <form action="sources?page=1" method="post">
+    <form action="/sources?page=1" method="post" class="form">
         {% csrf_token %}
-        <table>
-            {{ form|crispy }}
-        </table>
+        {{ form|crispy }}
         <input type="submit" class="btn btn-primary" value="Submit">
     </form>
     <div class="card-container">
@@ -21,8 +19,6 @@
                     </div>
                 </div>
             {% endif %}
-        {% empty %}
-            <p>No results</p>
         {% endfor %}
     </div>
 {% endblock %}
